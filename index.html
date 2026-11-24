@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Winrates de Guilty Gear</title>
+    <link rel="stylesheet" href="./css/style.css">
+    <script defer src="./js/main.js"></script>
+</head>
+<body>
+    <h1>Winrates de Guilty Gear</h1>
+
+    <section id="seccion-personajes">
+        <h2>Personajes</h2>
+        <form id="formulario-personaje">
+            <input type="text" id="nombre-personaje" placeholder="Nombre">
+            <input type="number" id="victorias" placeholder="Victorias" min="0">
+            <input type="number" id="derrotas" placeholder="Derrotas" min="0">
+            <button type="button" id="boton-agregar">Agregar</button>
+        </form>
+        <input type="text" id="buscador-personaje" placeholder="Buscar">
+        <p id="mensaje"></p>
+        <div id="contenedor-items"></div>
+    </section>
+
+    <section id="seccion-matchups">
+        <h2>Matchups</h2>
+        <select id="select-personaje"></select>
+        <select id="select-rival"></select>
+        <button type="button" id="boton-crear-matchup">crear Matchup</button>
+        <p id="mensaje-matchup"></p>
+        <div id="contenedor-matchups"></div>
+    </section>
+</body>
+</html>
