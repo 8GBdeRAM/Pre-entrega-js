@@ -1,40 +1,24 @@
-// Una sola clase sirve para personajes (rival "General") y para matchups (rival concreto)
-class Registro {
-  constructor(nombre, rival, victorias, derrotas) {
-    this.nombre = nombre;
-    this.rival = rival;
-    this.victorias = victorias;
-    this.derrotas = derrotas;
-  }
-  registrarResultado(gano) {
-    if (gano) {
-      this.victorias++;
-    } else {
-      this.derrotas++;
-    }
-  }
-}
-
 const rivalGeneral = "General";
 const limiteFuertePersonaje = 70;
 const limiteFuerteMatchup = 60;
 const limiteMedio = 40;
 
-const listaPersonajes = [
-  new Registro("Ramlethal Valentine", rivalGeneral, 30, 10),
-  new Registro("I-No", rivalGeneral, 14, 26),
-  new Registro("Sol Badguy", rivalGeneral, 29, 21),
-  new Registro("Ky Kiske", rivalGeneral, 21, 29),
-  new Registro("Potemkin", rivalGeneral, 33, 17),
+const listaPersonajes = JSON.parse(localStorage.getItem("personajes")) ?? [
+  { nombre: "Ramlethal Valentine", rival: rivalGeneral, victorias: 30, derrotas: 10 },
+  { nombre: "I-No", rival: rivalGeneral, victorias: 14, derrotas: 26 },
+  { nombre: "Sol Badguy", rival: rivalGeneral, victorias: 29, derrotas: 21 },
+  { nombre: "Ky Kiske", rival: rivalGeneral, victorias: 21, derrotas: 29 },
+  { nombre: "Potemkin", rival: rivalGeneral, victorias: 33, derrotas: 17 },
 ];
 
-let listaMatchups = [
-  new Registro("Ramlethal Valentine", "Ky Kiske", 18, 12),
-  new Registro("Ramlethal Valentine", "Potemkin", 10, 20),
-  new Registro("Ramlethal Valentine", "I-No", 15, 15),
-  new Registro("Sol Badguy", "Ky Kiske", 12, 8),
-  new Registro("Sol Badguy", "Potemkin", 9, 11),
+let listaMatchups = JSON.parse(localStorage.getItem("matchups")) ?? [
+  { nombre: "Ramlethal Valentine", rival: "Ky Kiske", victorias: 18, derrotas: 12 },
+  { nombre: "Ramlethal Valentine", rival: "Potemkin", victorias: 10, derrotas: 20 },
+  { nombre: "Ramlethal Valentine", rival: "I-No", victorias: 15, derrotas: 15 },
+  { nombre: "Sol Badguy", rival: "Ky Kiske", victorias: 12, derrotas: 8 },
+  { nombre: "Sol Badguy", rival: "Potemkin", victorias: 9, derrotas: 11 },
 ];
+
 const contenedorItems = document.getElementById("contenedor-items");
 const botonAgregar = document.getElementById("boton-agregar");
 const inputNombre = document.getElementById("nombre-personaje");
@@ -47,6 +31,7 @@ const selectRival = document.getElementById("select-rival");
 const mensajeMatchup = document.getElementById("mensaje-matchup");
 const botonCrearMatchup = document.getElementById("boton-crear-matchup");
 const contenedorMatchups = document.getElementById("contenedor-matchups");
+const todosMatchups = document.getElementById("todos-matchups");
 
 function listaFiltrada() {
   const filtro = buscadorPersonaje.value.trim().toLowerCase();
@@ -60,6 +45,11 @@ buscadorPersonaje.addEventListener("keyup", () => {
 });
 
 selectPersonaje.addEventListener("change", () => {
+  mostrarMatchups();
+});
+
+todosMatchups.addEventListener("change", () => {
+  localStorage.setItem("verTodos", JSON.stringify(todosMatchups.checked));
   mostrarMatchups();
 });
 
@@ -80,9 +70,13 @@ botonAgregar.addEventListener("click", () => {
     victorias >= 0 &&
     derrotas >= 0
   ) {
-    listaPersonajes.push(
-      new Registro(nombre, rivalGeneral, victorias, derrotas),
-    );
+    listaPersonajes.push({
+      nombre,
+      rival: rivalGeneral,
+      victorias,
+      derrotas,
+    });
+    guardarDatos();
     mostrarPersonajes();
     llenarSelects();
     inputNombre.value = "";
@@ -99,13 +93,21 @@ botonCrearMatchup.addEventListener("click", () => {
   const existe = listaMatchups.some(
     (matchup) => matchup.nombre === personaje && matchup.rival === rival,
   );
-  if (personaje === rival) {
+  if (personaje === "") {
+    mensajeMatchup.textContent = "Elegí un personaje para crear el matchup.";
+  } else if (personaje === rival) {
     mensajeMatchup.textContent =
       "El personaje y el rival no pueden ser el mismo.";
   } else if (existe) {
     mensajeMatchup.textContent = "Ese matchup ya existe.";
   } else {
-    listaMatchups.push(new Registro(personaje, rival, 0, 0));
+    listaMatchups.push({
+      nombre: personaje,
+      rival,
+      victorias: 0,
+      derrotas: 0,
+    });
+    guardarDatos();
     mostrarMatchups();
     mensajeMatchup.textContent = "Matchup creado.";
   }
@@ -113,6 +115,7 @@ botonCrearMatchup.addEventListener("click", () => {
 
 mostrarPersonajes();
 llenarSelects();
+todosMatchups.checked = JSON.parse(localStorage.getItem("verTodos")) ?? false;
 mostrarMatchups();
 
 function mostrarPersonajes(lista = listaPersonajes) {
@@ -131,9 +134,15 @@ function mostrarPersonajes(lista = listaPersonajes) {
   const botonesEliminar = contenedorItems.querySelectorAll(".eliminar");
   botonesEliminar.forEach((boton, indice) => {
     boton.addEventListener("click", () => {
+      const { nombre } = lista[indice];
       listaPersonajes.splice(listaPersonajes.indexOf(lista[indice]), 1);
+      listaMatchups = listaMatchups.filter(
+        (matchup) => matchup.nombre !== nombre && matchup.rival !== nombre,
+      );
+      guardarDatos();
       mostrarPersonajes(listaFiltrada());
       llenarSelects();
+      mostrarMatchups();
       mensaje.textContent = "Personaje eliminado.";
     });
   });
@@ -142,6 +151,10 @@ function mostrarPersonajes(lista = listaPersonajes) {
 function llenarSelects() {
   selectPersonaje.innerHTML = "";
   selectRival.innerHTML = "";
+  const optionVacia = document.createElement("option");
+  optionVacia.textContent = "Elegí un personaje";
+  optionVacia.value = "";
+  selectPersonaje.appendChild(optionVacia);
   listaPersonajes.forEach((personaje) => {
     const optionPersonaje = document.createElement("option");
     optionPersonaje.textContent = personaje.nombre;
@@ -155,7 +168,7 @@ function llenarSelects() {
   });
 }
 function mostrarMatchups() {
-  const matchups = matchupsDe(selectPersonaje.value);
+  const matchups = mostrarMatchupsDe(selectPersonaje.value);
   contenedorMatchups.innerHTML = "";
   if (matchups.length === 0) {
     mensajeMatchup.innerHTML =
@@ -178,37 +191,56 @@ function mostrarMatchups() {
     const botonesGanar = contenedorMatchups.querySelectorAll(".ganar");
     botonesGanar.forEach((boton, indice) => {
       boton.addEventListener("click", () => {
-        matchups[indice].registrarResultado(true);
+        registrarResultado(matchups[indice], true);
+        guardarDatos();
         mostrarMatchups();
       });
     });
     const botonesPerder = contenedorMatchups.querySelectorAll(".perder");
     botonesPerder.forEach((boton, indice) => {
       boton.addEventListener("click", () => {
-        matchups[indice].registrarResultado(false);
+        registrarResultado(matchups[indice], false);
+        guardarDatos();
         mostrarMatchups();
       });
     });
   }
 }
 
+function registrarResultado(registro, gano) {
+  if (gano) {
+    registro.victorias++;
+  } else {
+    registro.derrotas++;
+  }
+}
+
+function guardarDatos() {
+  localStorage.setItem("personajes", JSON.stringify(listaPersonajes));
+  localStorage.setItem("matchups", JSON.stringify(listaMatchups));
+}
+
+function mostrarMatchupsDe(personaje) {
+  return todosMatchups.checked
+    ? listaMatchups
+    : listaMatchups.filter((matchup) => matchup.nombre === personaje);
+}
+
 //Cálculos y textos (sirven para personajes y matchups)
 
-function calcularWinrate(registro) {
-  const total = registro.victorias + registro.derrotas;
+function calcularWinrate({ victorias, derrotas }) {
+  const total = victorias + derrotas;
   let winrate = 0;
   if (total > 0) {
-    winrate = Math.round((registro.victorias / total) * 1000) / 10;
+    winrate = Math.round((victorias / total) * 1000) / 10;
   }
   return winrate;
 }
 
 function clasificar(registro) {
   const winrate = calcularWinrate(registro);
-  let limiteFuerte = limiteFuerteMatchup;
-  if (registro.rival === rivalGeneral) {
-    limiteFuerte = limiteFuertePersonaje;
-  }
+  const limiteFuerte =
+    registro.rival === rivalGeneral ? limiteFuertePersonaje : limiteFuerteMatchup;
 
   let nivel = "Debil";
   if (registro.victorias + registro.derrotas === 0) {
@@ -228,8 +260,3 @@ function tituloDe(registro) {
   return registro.nombre + " vs " + registro.rival;
 }
 
-function matchupsDe(nombre) {
-  return listaMatchups.filter(
-    (matchup) => matchup.nombre.toLowerCase() === nombre.toLowerCase(),
-  );
-}
