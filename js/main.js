@@ -3,12 +3,42 @@ const limiteFuertePersonaje = 70;
 const limiteFuerteMatchup = 60;
 const limiteMedio = 40;
 
+//en la entrega 9 no puedo crear todavia el .json, por eso uso localStorage
 const listaPersonajes = JSON.parse(localStorage.getItem("personajes")) ?? [
   { nombre: "Ramlethal Valentine", rival: rivalGeneral, victorias: 30, derrotas: 10 },
   { nombre: "I-No", rival: rivalGeneral, victorias: 14, derrotas: 26 },
   { nombre: "Sol Badguy", rival: rivalGeneral, victorias: 29, derrotas: 21 },
   { nombre: "Ky Kiske", rival: rivalGeneral, victorias: 21, derrotas: 29 },
   { nombre: "Potemkin", rival: rivalGeneral, victorias: 33, derrotas: 17 },
+  { nombre: "May", rival: rivalGeneral, victorias: 9, derrotas: 19 },
+  { nombre: "Axl Low", rival: rivalGeneral, victorias: 11, derrotas: 5 },
+  { nombre: "Chipp Zanuff", rival: rivalGeneral, victorias: 8, derrotas: 20 },
+  { nombre: "Faust", rival: rivalGeneral, victorias: 24, derrotas: 31 },
+  { nombre: "Millia Rage", rival: rivalGeneral, victorias: 10, derrotas: 20 },
+  { nombre: "Zato-1", rival: rivalGeneral, victorias: 28, derrotas: 6 },
+  { nombre: "Leo Whitefang", rival: rivalGeneral, victorias: 20, derrotas: 27 },
+  { nombre: "Nagoriyuki", rival: rivalGeneral, victorias: 14, derrotas: 19 },
+  { nombre: "Giovanna", rival: rivalGeneral, victorias: 15, derrotas: 38 },
+  { nombre: "Anji Mito", rival: rivalGeneral, victorias: 14, derrotas: 22 },
+  { nombre: "Goldlewis Dickinson", rival: rivalGeneral, victorias: 32, derrotas: 33 },
+  { nombre: "Jack-O' Valentine", rival: rivalGeneral, victorias: 32, derrotas: 26 },
+  { nombre: "Happy Chaos", rival: rivalGeneral, victorias: 11, derrotas: 10 },
+  { nombre: "Baiken", rival: rivalGeneral, victorias: 11, derrotas: 20 },
+  { nombre: "Testament", rival: rivalGeneral, victorias: 26, derrotas: 12 },
+  { nombre: "Bridget", rival: rivalGeneral, victorias: 25, derrotas: 25 },
+  { nombre: "Sin Kiske", rival: rivalGeneral, victorias: 18, derrotas: 10 },
+  { nombre: "Bedman?", rival: rivalGeneral, victorias: 30, derrotas: 17 },
+  { nombre: "Asuka R. Kreutz", rival: rivalGeneral, victorias: 12, derrotas: 27 },
+  { nombre: "Johnny", rival: rivalGeneral, victorias: 25, derrotas: 9 },
+  { nombre: "Elphelt Valentine", rival: rivalGeneral, victorias: 31, derrotas: 21 },
+  { nombre: "A.B.A", rival: rivalGeneral, victorias: 38, derrotas: 27 },
+  { nombre: "Slayer", rival: rivalGeneral, victorias: 7, derrotas: 12 },
+  { nombre: "Queen Dizzy", rival: rivalGeneral, victorias: 5, derrotas: 34 },
+  { nombre: "Venom", rival: rivalGeneral, victorias: 39, derrotas: 22 },
+  { nombre: "Unika", rival: rivalGeneral, victorias: 19, derrotas: 5 },
+  { nombre: "Lucy", rival: rivalGeneral, victorias: 39, derrotas: 36 },
+  { nombre: "Jam Kuradoberi", rival: rivalGeneral, victorias: 25, derrotas: 27 },
+  { nombre: "Robo-Ky", rival: rivalGeneral, victorias: 8, derrotas: 18 },
 ];
 
 let listaMatchups = JSON.parse(localStorage.getItem("matchups")) ?? [
@@ -101,7 +131,9 @@ botonCrearMatchup.addEventListener("click", () => {
   } else if (existe) {
     mensajeMatchup.textContent = "Ese matchup ya existe.";
   } else {
-    listaMatchups.push({
+    mensajeMatchup.textContent = "Guardando...";
+    setTimeout(() => {
+      listaMatchups.push({
       nombre: personaje,
       rival,
       victorias: 0,
@@ -110,10 +142,15 @@ botonCrearMatchup.addEventListener("click", () => {
     guardarDatos();
     mostrarMatchups();
     mensajeMatchup.textContent = "Matchup creado.";
+    }, 800);
   }
 });
 
-mostrarPersonajes();
+contenedorItems.textContent = "Cargando personajes...";
+setTimeout(() => {
+  contenedorItems.textContent = "";
+  mostrarPersonajes();
+}, 1000);
 llenarSelects();
 todosMatchups.checked = JSON.parse(localStorage.getItem("verTodos")) ?? false;
 mostrarMatchups();
@@ -259,4 +296,30 @@ function tituloDe(registro) {
   }
   return registro.nombre + " vs " + registro.rival;
 }
+function mostrarAvisoPersonaje(personaje) {
+   const aviso = document.createElement("div");
+   aviso.className = "aviso";
+   aviso.textContent = `Hoy estudia los MU de ${personaje}`;
+   const botonCerrar = document.createElement("button");
+   botonCerrar.textContent = "Cerrar";
+   botonCerrar.addEventListener("click", () => {
+     aviso.remove();
+   });
+   aviso.appendChild(botonCerrar);
+   document.body.appendChild(aviso);
+}
+const personajesGuilty = [
+  "Ramlethal Valentine", "I-No", "Sol Badguy", "Ky Kiske", "Potemkin",
+  "May", "Axl Low", "Chipp Zanuff", "Faust", "Millia Rage", "Zato-1",
+  "Leo Whitefang", "Nagoriyuki", "Giovanna", "Anji Mito", "Goldlewis Dickinson",
+  "Jack-O' Valentine", "Happy Chaos", "Baiken", "Testament", "Bridget",
+  "Sin Kiske", "Bedman?", "Asuka R. Kreutz", "Johnny", "Elphelt Valentine",
+  "A.B.A", "Slayer", "Queen Dizzy", "Venom", "Unika", "Lucy",
+  "Jam Kuradoberi", "Robo-Ky",
+];
 
+setTimeout(() => {
+  const indice = Math.floor(Math.random() * personajesGuilty.length);
+  const personajeAzar = personajesGuilty[indice];
+  mostrarAvisoPersonaje(personajeAzar);
+}, 2000);
