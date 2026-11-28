@@ -1,67 +1,68 @@
+let listaPersonajes = [];
+const mensajeCarga = document.getElementById("mensaje-carga");
+
 const rivalGeneral = "General";
 const limiteFuertePersonaje = 70;
 const limiteFuerteMatchup = 60;
 const limiteMedio = 40;
-
-//en la entrega 9 no puedo crear todavia el .json, por eso uso localStorage
-const listaPersonajes = JSON.parse(localStorage.getItem("personajes")) ?? [
-  { nombre: "Ramlethal Valentine", rival: rivalGeneral, victorias: 30, derrotas: 10 },
-  { nombre: "I-No", rival: rivalGeneral, victorias: 14, derrotas: 26 },
-  { nombre: "Sol Badguy", rival: rivalGeneral, victorias: 29, derrotas: 21 },
-  { nombre: "Ky Kiske", rival: rivalGeneral, victorias: 21, derrotas: 29 },
-  { nombre: "Potemkin", rival: rivalGeneral, victorias: 33, derrotas: 17 },
-  { nombre: "May", rival: rivalGeneral, victorias: 9, derrotas: 19 },
-  { nombre: "Axl Low", rival: rivalGeneral, victorias: 11, derrotas: 5 },
-  { nombre: "Chipp Zanuff", rival: rivalGeneral, victorias: 8, derrotas: 20 },
-  { nombre: "Faust", rival: rivalGeneral, victorias: 24, derrotas: 31 },
-  { nombre: "Millia Rage", rival: rivalGeneral, victorias: 10, derrotas: 20 },
-  { nombre: "Zato-1", rival: rivalGeneral, victorias: 28, derrotas: 6 },
-  { nombre: "Leo Whitefang", rival: rivalGeneral, victorias: 20, derrotas: 27 },
-  { nombre: "Nagoriyuki", rival: rivalGeneral, victorias: 14, derrotas: 19 },
-  { nombre: "Giovanna", rival: rivalGeneral, victorias: 15, derrotas: 38 },
-  { nombre: "Anji Mito", rival: rivalGeneral, victorias: 14, derrotas: 22 },
-  { nombre: "Goldlewis Dickinson", rival: rivalGeneral, victorias: 32, derrotas: 33 },
-  { nombre: "Jack-O' Valentine", rival: rivalGeneral, victorias: 32, derrotas: 26 },
-  { nombre: "Happy Chaos", rival: rivalGeneral, victorias: 11, derrotas: 10 },
-  { nombre: "Baiken", rival: rivalGeneral, victorias: 11, derrotas: 20 },
-  { nombre: "Testament", rival: rivalGeneral, victorias: 26, derrotas: 12 },
-  { nombre: "Bridget", rival: rivalGeneral, victorias: 25, derrotas: 25 },
-  { nombre: "Sin Kiske", rival: rivalGeneral, victorias: 18, derrotas: 10 },
-  { nombre: "Bedman?", rival: rivalGeneral, victorias: 30, derrotas: 17 },
-  { nombre: "Asuka R. Kreutz", rival: rivalGeneral, victorias: 12, derrotas: 27 },
-  { nombre: "Johnny", rival: rivalGeneral, victorias: 25, derrotas: 9 },
-  { nombre: "Elphelt Valentine", rival: rivalGeneral, victorias: 31, derrotas: 21 },
-  { nombre: "A.B.A", rival: rivalGeneral, victorias: 38, derrotas: 27 },
-  { nombre: "Slayer", rival: rivalGeneral, victorias: 7, derrotas: 12 },
-  { nombre: "Queen Dizzy", rival: rivalGeneral, victorias: 5, derrotas: 34 },
-  { nombre: "Venom", rival: rivalGeneral, victorias: 39, derrotas: 22 },
-  { nombre: "Unika", rival: rivalGeneral, victorias: 19, derrotas: 5 },
-  { nombre: "Lucy", rival: rivalGeneral, victorias: 39, derrotas: 36 },
-  { nombre: "Jam Kuradoberi", rival: rivalGeneral, victorias: 25, derrotas: 27 },
-  { nombre: "Robo-Ky", rival: rivalGeneral, victorias: 8, derrotas: 18 },
-];
-
-let listaMatchups = JSON.parse(localStorage.getItem("matchups")) ?? [
-  { nombre: "Ramlethal Valentine", rival: "Ky Kiske", victorias: 18, derrotas: 12 },
-  { nombre: "Ramlethal Valentine", rival: "Potemkin", victorias: 10, derrotas: 20 },
-  { nombre: "Ramlethal Valentine", rival: "I-No", victorias: 15, derrotas: 15 },
-  { nombre: "Sol Badguy", rival: "Ky Kiske", victorias: 12, derrotas: 8 },
-  { nombre: "Sol Badguy", rival: "Potemkin", victorias: 9, derrotas: 11 },
-];
+let ventajas = {};
+let matchupsCalculados = [];
+let consejosMatchups = {};
+const textoSinConsejo = "Todavía no hay consejo para este matchup.";
 
 const contenedorItems = document.getElementById("contenedor-items");
-const botonAgregar = document.getElementById("boton-agregar");
-const inputNombre = document.getElementById("nombre-personaje");
-const inputVictorias = document.getElementById("victorias");
-const inputDerrotas = document.getElementById("derrotas");
-const mensaje = document.getElementById("mensaje");
 const buscadorPersonaje = document.getElementById("buscador-personaje");
 const selectPersonaje = document.getElementById("select-personaje");
-const selectRival = document.getElementById("select-rival");
 const mensajeMatchup = document.getElementById("mensaje-matchup");
-const botonCrearMatchup = document.getElementById("boton-crear-matchup");
 const contenedorMatchups = document.getElementById("contenedor-matchups");
 const todosMatchups = document.getElementById("todos-matchups");
+const contenedorFiltrosTipos = document.getElementById("filtros-tipos");
+const botonConsejo = document.getElementById("boton-consejo");
+const contenedorConsejos = document.getElementById("contenedor-consejos");
+const selectConsejoPersonaje = document.getElementById(
+  "select-consejo-personaje",
+);
+const selectConsejoRival = document.getElementById("select-consejo-rival");
+const inputBuscarConsejo = document.getElementById("buscar-consejo");
+
+const URL = "./data/datos.json";
+
+//creo el toast en una función para no estar repitiendo el código cada vez que quiero mostrar un mensaje
+function mostrarToast(texto, tipo = "info", duracion = 3000) {
+  const claseToast = `toast-${tipo}`;
+  Toastify({
+    text: texto,
+    duration: duracion,
+    close: true,
+    gravity: "top",
+    position: "right",
+    className: claseToast,
+  }).showToast();
+}
+
+async function cargarDatos() {
+  mensajeCarga.textContent = "Cargando personajes...";
+  try {
+    const respuesta = await fetch(URL);
+    const datos = await respuesta.json();
+    listaPersonajes = datos.personajes;
+    ventajas = datos.ventajas;
+    consejosMatchups = datos.consejos;
+    llenarFiltrosTipos();
+    matchupsCalculados = calcularMatchups();
+    mostrarPersonajes();
+    llenarSelects();
+    mostrarMatchups();
+    mostrarToast("Datos cargados correctamente", "exito", 2000);
+  } catch (error) {
+    const textoError = "Error al cargar los datos";
+    mostrarToast(textoError, "error");
+  } finally {
+    mensajeCarga.textContent = "";
+  }
+}
+
+cargarDatos();
 
 function listaFiltrada() {
   const filtro = buscadorPersonaje.value.trim().toLowerCase();
@@ -83,185 +84,203 @@ todosMatchups.addEventListener("change", () => {
   mostrarMatchups();
 });
 
-botonAgregar.addEventListener("click", () => {
-  const nombre = inputNombre.value.trim();
-  const victorias = parseInt(inputVictorias.value, 10);
-  const derrotas = parseInt(inputDerrotas.value, 10);
-  const existe = listaPersonajes.some(
-    (personaje) => personaje.nombre === nombre,
-  );
-
-  if (existe) {
-    mensaje.textContent = "Ese personaje ya existe.";
-  } else if (
-    nombre &&
-    !isNaN(victorias) &&
-    !isNaN(derrotas) &&
-    victorias >= 0 &&
-    derrotas >= 0
-  ) {
-    listaPersonajes.push({
-      nombre,
-      rival: rivalGeneral,
-      victorias,
-      derrotas,
-    });
-    guardarDatos();
-    mostrarPersonajes();
-    llenarSelects();
-    inputNombre.value = "";
-    inputVictorias.value = "";
-    inputDerrotas.value = "";
-    mensaje.textContent = "Personaje agregado.";
-  } else {
-    mensaje.textContent = "Por favor, complete todos los campos correctamente.";
-  }
-});
-botonCrearMatchup.addEventListener("click", () => {
-  const personaje = selectPersonaje.value;
-  const rival = selectRival.value;
-  const existe = listaMatchups.some(
-    (matchup) => matchup.nombre === personaje && matchup.rival === rival,
-  );
-  if (personaje === "") {
-    mensajeMatchup.textContent = "Elegí un personaje para crear el matchup.";
-  } else if (personaje === rival) {
-    mensajeMatchup.textContent =
-      "El personaje y el rival no pueden ser el mismo.";
-  } else if (existe) {
-    mensajeMatchup.textContent = "Ese matchup ya existe.";
-  } else {
-    mensajeMatchup.textContent = "Guardando...";
-    setTimeout(() => {
-      listaMatchups.push({
-      nombre: personaje,
-      rival,
-      victorias: 0,
-      derrotas: 0,
-    });
-    guardarDatos();
-    mostrarMatchups();
-    mensajeMatchup.textContent = "Matchup creado.";
-    }, 800);
-  }
-});
-
-contenedorItems.textContent = "Cargando personajes...";
-setTimeout(() => {
-  contenedorItems.textContent = "";
-  mostrarPersonajes();
-}, 1000);
 llenarSelects();
 todosMatchups.checked = JSON.parse(localStorage.getItem("verTodos")) ?? false;
 mostrarMatchups();
 
 function mostrarPersonajes(lista = listaPersonajes) {
-  contenedorItems.innerHTML = "<h3>Lista de personajes</h3>";
+  contenedorItems.textContent = "";
   lista.forEach((personaje) => {
     const winrate = calcularWinrate(personaje);
     const nivel = clasificar(personaje);
     const tarjeta = document.createElement("div");
     tarjeta.className = "tarjeta";
-    tarjeta.innerHTML = `
-        <h3>${personaje.nombre}</h3>
-        <p>Winrate: ${winrate}% | V:${personaje.victorias} | D:${personaje.derrotas} | Nivel: ${nivel}</p>
-        <button class="eliminar">Eliminar</button>`;
-    contenedorItems.appendChild(tarjeta);
-  });
-  const botonesEliminar = contenedorItems.querySelectorAll(".eliminar");
-  botonesEliminar.forEach((boton, indice) => {
-    boton.addEventListener("click", () => {
-      const { nombre } = lista[indice];
-      listaPersonajes.splice(listaPersonajes.indexOf(lista[indice]), 1);
-      listaMatchups = listaMatchups.filter(
-        (matchup) => matchup.nombre !== nombre && matchup.rival !== nombre,
-      );
-      guardarDatos();
-      mostrarPersonajes(listaFiltrada());
-      llenarSelects();
-      mostrarMatchups();
-      mensaje.textContent = "Personaje eliminado.";
-    });
+    const titulo = document.createElement("h3");
+    titulo.textContent = personaje.nombre;
+    const datos = document.createElement("p");
+    datos.textContent = `Winrate: ${winrate}% | V:${personaje.victorias} | D:${personaje.derrotas} | Nivel: ${nivel}`;
+    tarjeta.append(titulo, datos);
+    contenedorItems.append(tarjeta);
   });
 }
 
 function llenarSelects() {
-  selectPersonaje.innerHTML = "";
-  selectRival.innerHTML = "";
-  const optionVacia = document.createElement("option");
-  optionVacia.textContent = "Elegí un personaje";
-  optionVacia.value = "";
-  selectPersonaje.appendChild(optionVacia);
+  selectPersonaje.textContent = "";
+  selectPersonaje.insertAdjacentHTML(
+    "beforeend",
+    `<option value="">Elegí un personaje</option>`,
+  );
   listaPersonajes.forEach((personaje) => {
-    const optionPersonaje = document.createElement("option");
-    optionPersonaje.textContent = personaje.nombre;
-    optionPersonaje.value = personaje.nombre;
-    selectPersonaje.appendChild(optionPersonaje);
+    const opcion = `<option value="${personaje.nombre}">${personaje.nombre}</option>`;
+    selectPersonaje.insertAdjacentHTML("beforeend", opcion);
+  });
+  llenarSelectsConsejo();
+}
 
-    const optionRival = document.createElement("option");
-    optionRival.textContent = personaje.nombre;
-    optionRival.value = personaje.nombre;
-    selectRival.appendChild(optionRival);
+function llenarSelectsConsejo() {
+  selectConsejoPersonaje.textContent = "";
+  selectConsejoRival.textContent = "";
+  selectConsejoPersonaje.insertAdjacentHTML(
+    "beforeend",
+    `<option value="">Elegí un personaje</option>`,
+  );
+  selectConsejoRival.insertAdjacentHTML(
+    "beforeend",
+    `<option value="">General</option>`,
+  );
+  listaPersonajes.forEach((personaje) => {
+    const opcion = `<option value="${personaje.nombre}">${personaje.nombre}</option>`;
+    selectConsejoPersonaje.insertAdjacentHTML("beforeend", opcion);
+    selectConsejoRival.insertAdjacentHTML("beforeend", opcion);
   });
 }
 function mostrarMatchups() {
   const matchups = mostrarMatchupsDe(selectPersonaje.value);
-  contenedorMatchups.innerHTML = "";
+  contenedorMatchups.textContent = "";
   if (matchups.length === 0) {
-    mensajeMatchup.innerHTML =
-      "<span>No hay matchups para este personaje.</span>";
+    mensajeMatchup.textContent = "No hay matchups para este personaje.";
   } else {
     mensajeMatchup.textContent = "";
     matchups.forEach((matchup) => {
       const titulo = tituloDe(matchup);
-      const winrate = calcularWinrate(matchup);
-      const nivel = clasificar(matchup);
-      const tarjeta = document.createElement("div");
-      tarjeta.className = "tarjeta";
-      tarjeta.innerHTML = `
+      contenedorMatchups.insertAdjacentHTML(
+        "beforeend",
+        `<div class="tarjeta tarjeta-matchup">
           <h3>${titulo}</h3>
-          <p>Winrate: ${winrate}% | V:${matchup.victorias} | D:${matchup.derrotas} | Nivel: ${nivel}</p>
-          <button class="ganar">Ganó</button>
-          <button class="perder">Perdió</button>`;
-      contenedorMatchups.appendChild(tarjeta);
+          <p>Winrate: ${matchup.winrateBase}%</p>
+        </div>`,
+      );
     });
-    const botonesGanar = contenedorMatchups.querySelectorAll(".ganar");
-    botonesGanar.forEach((boton, indice) => {
-      boton.addEventListener("click", () => {
-        registrarResultado(matchups[indice], true);
-        guardarDatos();
-        mostrarMatchups();
-      });
-    });
-    const botonesPerder = contenedorMatchups.querySelectorAll(".perder");
-    botonesPerder.forEach((boton, indice) => {
-      boton.addEventListener("click", () => {
-        registrarResultado(matchups[indice], false);
-        guardarDatos();
-        mostrarMatchups();
+    const tarjetasMatchups =
+      contenedorMatchups.querySelectorAll(".tarjeta-matchup");
+    tarjetasMatchups.forEach((tarjeta, indice) => {
+      tarjeta.addEventListener("click", () => {
+        mostrarConsejoMatchup(matchups[indice]);
       });
     });
   }
 }
+const listaConsejo = JSON.parse(localStorage.getItem("consejos")) ?? [];
 
-function registrarResultado(registro, gano) {
-  if (gano) {
-    registro.victorias++;
-  } else {
-    registro.derrotas++;
+botonConsejo.addEventListener("click", async () => {
+  const personaje = selectConsejoPersonaje.value;
+  const rival = selectConsejoRival.value;
+  if (personaje === "") {
+    mostrarToast("Elegí un personaje para el consejo.", "error");
+    return;
   }
+  const resultado = await Swal.fire({
+    title: `Consejo para ${personaje}`,
+    input: "text",
+    inputPlaceholder: "Escribe tu consejo aquí",
+    showCancelButton: true,
+    confirmButtonText: "Guardar",
+    cancelButtonText: "Cancelar",
+    customClass: {
+      popup: "swal-popup",
+      confirmButton: "swal-confirm",
+    },
+  });
+  const consejo = resultado.value && resultado.value.trim();
+  if (resultado.isConfirmed && consejo) {
+    listaConsejo.push({
+      nombre: personaje,
+      rival: rival || rivalGeneral,
+      texto: consejo,
+    });
+    guardarConsejos();
+    mostrarConsejos(listaConsejo);
+    mostrarToast("Consejo guardado.", "exito");
+  }
+});
+
+function mostrarConsejos(lista) {
+  contenedorConsejos.textContent = "";
+  lista.forEach((consejo) => {
+    const tarjeta = document.createElement("div");
+    tarjeta.className = "tarjeta";
+    const titulo = document.createElement("h3");
+    titulo.textContent = tituloDe(consejo);
+    const texto = document.createElement("p");
+    texto.textContent = consejo.texto;
+    tarjeta.append(titulo, texto);
+    contenedorConsejos.append(tarjeta);
+  });
 }
 
-function guardarDatos() {
-  localStorage.setItem("personajes", JSON.stringify(listaPersonajes));
-  localStorage.setItem("matchups", JSON.stringify(listaMatchups));
+inputBuscarConsejo.addEventListener("input", () => {
+  const termino = inputBuscarConsejo.value.trim().toLowerCase();
+  const filtrados = listaConsejo.filter((consejo) => {
+    const titulo = tituloDe(consejo).toLowerCase();
+    return (
+      titulo.includes(termino) || consejo.texto.toLowerCase().includes(termino)
+    );
+  });
+  mostrarConsejos(filtrados);
+});
+
+function guardarConsejos() {
+  localStorage.setItem("consejos", JSON.stringify(listaConsejo));
 }
 
 function mostrarMatchupsDe(personaje) {
-  return todosMatchups.checked
-    ? listaMatchups
-    : listaMatchups.filter((matchup) => matchup.nombre === personaje);
+  const base = todosMatchups.checked
+    ? matchupsCalculados
+    : matchupsCalculados.filter((matchup) => matchup.nombre === personaje);
+  const tiposElegidos = tiposSeleccionados();
+  return tiposElegidos.length === 0
+    ? base
+    : base.filter((matchup) => tiposElegidos.includes(matchup.tipoRival));
 }
+
+function llenarFiltrosTipos() {
+  contenedorFiltrosTipos.textContent = "";
+  Object.keys(ventajas).forEach((tipo) => {
+    const casilla = `<label><input type="checkbox" class="filtro-tipo" value="${tipo}" /> ${tipo}</label>`;
+    contenedorFiltrosTipos.insertAdjacentHTML("beforeend", casilla);
+  });
+  const casillas = contenedorFiltrosTipos.querySelectorAll(".filtro-tipo");
+  casillas.forEach((casilla) => {
+    casilla.addEventListener("change", mostrarMatchups);
+  });
+}
+
+function tiposSeleccionados() {
+  const casillasMarcadas = contenedorFiltrosTipos.querySelectorAll(
+    ".filtro-tipo:checked",
+  );
+  return Array.from(casillasMarcadas).map((casilla) => casilla.value);
+}
+
+function mostrarConsejoMatchup(matchup) {
+  const contenido = document.createElement("div");
+  const consejoBase = document.createElement("p");
+  consejoBase.textContent =
+    consejosMatchups[matchup.tipoAtacante]?.[matchup.tipoRival] ??
+    textoSinConsejo;
+  contenido.append(consejoBase);
+  listaConsejo
+    .filter(
+      (consejo) =>
+        consejo.nombre === matchup.nombre && consejo.rival === matchup.rival,
+    )
+    .forEach((consejo) => {
+      const parrafo = document.createElement("p");
+      const etiqueta = document.createElement("strong");
+      etiqueta.textContent = "Tu consejo: ";
+      parrafo.append(etiqueta, consejo.texto);
+      contenido.append(parrafo);
+    });
+  Swal.fire({
+    title: tituloDe(matchup),
+    html: contenido,
+    customClass: {
+      popup: "swal-popup",
+      confirmButton: "swal-confirm",
+    },
+  });
+}
+mostrarConsejos(listaConsejo);
 
 //Cálculos y textos (sirven para personajes y matchups)
 
@@ -273,11 +292,30 @@ function calcularWinrate({ victorias, derrotas }) {
   }
   return winrate;
 }
+function calcularMatchups() {
+  const resultado = [];
+  listaPersonajes.forEach((personajeA) => {
+    listaPersonajes.forEach((personajeB) => {
+      if (personajeA.nombre === personajeB.nombre) return;
+      const bonus = ventajas[personajeA.tipo][personajeB.tipo];
+      resultado.push({
+        nombre: personajeA.nombre,
+        rival: personajeB.nombre,
+        tipoAtacante: personajeA.tipo,
+        tipoRival: personajeB.tipo,
+        winrateBase: 50 + bonus / 2,
+      });
+    });
+  });
+  return resultado;
+}
 
 function clasificar(registro) {
   const winrate = calcularWinrate(registro);
   const limiteFuerte =
-    registro.rival === rivalGeneral ? limiteFuertePersonaje : limiteFuerteMatchup;
+    registro.rival === rivalGeneral
+      ? limiteFuertePersonaje
+      : limiteFuerteMatchup;
 
   let nivel = "Debil";
   if (registro.victorias + registro.derrotas === 0) {
@@ -297,25 +335,44 @@ function tituloDe(registro) {
   return registro.nombre + " vs " + registro.rival;
 }
 function mostrarAvisoPersonaje(personaje) {
-   const aviso = document.createElement("div");
-   aviso.className = "aviso";
-   aviso.textContent = `Hoy estudia los MU de ${personaje}`;
-   const botonCerrar = document.createElement("button");
-   botonCerrar.textContent = "Cerrar";
-   botonCerrar.addEventListener("click", () => {
-     aviso.remove();
-   });
-   aviso.appendChild(botonCerrar);
-   document.body.appendChild(aviso);
+  const textoAviso = `Hoy estudia los MU de ${personaje}`;
+  mostrarToast(textoAviso, "exito", 5000);
 }
 const personajesGuilty = [
-  "Ramlethal Valentine", "I-No", "Sol Badguy", "Ky Kiske", "Potemkin",
-  "May", "Axl Low", "Chipp Zanuff", "Faust", "Millia Rage", "Zato-1",
-  "Leo Whitefang", "Nagoriyuki", "Giovanna", "Anji Mito", "Goldlewis Dickinson",
-  "Jack-O' Valentine", "Happy Chaos", "Baiken", "Testament", "Bridget",
-  "Sin Kiske", "Bedman?", "Asuka R. Kreutz", "Johnny", "Elphelt Valentine",
-  "A.B.A", "Slayer", "Queen Dizzy", "Venom", "Unika", "Lucy",
-  "Jam Kuradoberi", "Robo-Ky",
+  "Ramlethal Valentine",
+  "I-No",
+  "Sol Badguy",
+  "Ky Kiske",
+  "Potemkin",
+  "May",
+  "Axl Low",
+  "Chipp Zanuff",
+  "Faust",
+  "Millia Rage",
+  "Zato-1",
+  "Leo Whitefang",
+  "Nagoriyuki",
+  "Giovanna",
+  "Anji Mito",
+  "Goldlewis Dickinson",
+  "Jack-O' Valentine",
+  "Happy Chaos",
+  "Baiken",
+  "Testament",
+  "Bridget",
+  "Sin Kiske",
+  "Bedman?",
+  "Asuka R. Kreutz",
+  "Johnny",
+  "Elphelt Valentine",
+  "A.B.A",
+  "Slayer",
+  "Queen Dizzy",
+  "Venom",
+  "Unika",
+  "Lucy",
+  "Jam Kuradoberi",
+  "Robo-Ky",
 ];
 
 setTimeout(() => {

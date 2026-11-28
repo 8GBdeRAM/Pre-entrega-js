@@ -89,3 +89,30 @@ button:hover {
   font-size: 12px;
   margin-left: 12px;
 }
+
+.toastify.toast-exito {
+  background: var(--superficie);
+  color: var(--dorado);
+  border: 2px solid var(--dorado);
+}
+
+.toastify.toast-error {
+  background: var(--rojo);
+  color: var(--texto);
+  border: 2px solid var(--rojo);
+}
+
+
+.swal2-container .swal-popup {
+  background: var(--superficie);
+  color: var(--texto);
+  border: 2px solid var(--rojo);
+}
+
+.swal2-container .swal2-styled.swal-confirm {
+  background-color: var(--rojo);
+}
+
+.swal2-container .swal2-styled.swal-confirm:hover {
+  background-color: #a00d25;
+}

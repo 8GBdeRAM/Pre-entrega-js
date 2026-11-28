@@ -1,0 +1,112 @@
+{
+  "personajes": [
+    { "id": 1, "nombre": "Ramlethal Valentine", "tipo": "Balance", "rival": "General", "victorias": 30, "derrotas": 10 },
+    { "id": 2, "nombre": "I-No", "tipo": "Rushdown", "rival": "General", "victorias": 14, "derrotas": 26 },
+    { "id": 3, "nombre": "Sol Badguy", "tipo": "Balance", "rival": "General", "victorias": 29, "derrotas": 21 },
+    { "id": 4, "nombre": "Ky Kiske", "tipo": "Balance", "rival": "General", "victorias": 21, "derrotas": 29 },
+    { "id": 5, "nombre": "Potemkin", "tipo": "Power", "rival": "General", "victorias": 33, "derrotas": 17 },
+    { "id": 6, "nombre": "May", "tipo": "Power", "rival": "General", "victorias": 9, "derrotas": 19 },
+    { "id": 7, "nombre": "Axl Low", "tipo": "Zoning", "rival": "General", "victorias": 11, "derrotas": 5 },
+    { "id": 8, "nombre": "Chipp Zanuff", "tipo": "Rushdown", "rival": "General", "victorias": 8, "derrotas": 20 },
+    { "id": 9, "nombre": "Faust", "tipo": "Unique", "rival": "General", "victorias": 24, "derrotas": 31 },
+    { "id": 10, "nombre": "Millia Rage", "tipo": "Rushdown", "rival": "General", "victorias": 10, "derrotas": 20 },
+    { "id": 11, "nombre": "Zato-1", "tipo": "Unique", "rival": "General", "victorias": 28, "derrotas": 6 },
+    { "id": 12, "nombre": "Leo Whitefang", "tipo": "Rushdown", "rival": "General", "victorias": 20, "derrotas": 27 },
+    { "id": 13, "nombre": "Nagoriyuki", "tipo": "One Shot", "rival": "General", "victorias": 14, "derrotas": 19 },
+    { "id": 14, "nombre": "Giovanna", "tipo": "Rushdown", "rival": "General", "victorias": 15, "derrotas": 38 },
+    { "id": 15, "nombre": "Anji Mito", "tipo": "Balance", "rival": "General", "victorias": 14, "derrotas": 22 },
+    { "id": 16, "nombre": "Goldlewis Dickinson", "tipo": "Power", "rival": "General", "victorias": 32, "derrotas": 33 },
+    { "id": 17, "nombre": "Jack-O' Valentine", "tipo": "Unique", "rival": "General", "victorias": 32, "derrotas": 26 },
+    { "id": 18, "nombre": "Happy Chaos", "tipo": "Shooting", "rival": "General", "victorias": 11, "derrotas": 10 },
+    { "id": 19, "nombre": "Baiken", "tipo": "Balance", "rival": "General", "victorias": 11, "derrotas": 20 },
+    { "id": 20, "nombre": "Testament", "tipo": "Zoning", "rival": "General", "victorias": 26, "derrotas": 12 },
+    { "id": 21, "nombre": "Bridget", "tipo": "Balance", "rival": "General", "victorias": 25, "derrotas": 25 },
+    { "id": 22, "nombre": "Sin Kiske", "tipo": "Balance", "rival": "General", "victorias": 18, "derrotas": 10 },
+    { "id": 23, "nombre": "Bedman?", "tipo": "Unique", "rival": "General", "victorias": 30, "derrotas": 17 },
+    { "id": 24, "nombre": "Asuka R. Kreutz", "tipo": "Unique", "rival": "General", "victorias": 12, "derrotas": 27 },
+    { "id": 25, "nombre": "Johnny", "tipo": "Zoning", "rival": "General", "victorias": 25, "derrotas": 9 },
+    { "id": 26, "nombre": "Elphelt Valentine", "tipo": "Rushdown", "rival": "General", "victorias": 31, "derrotas": 21 },
+    { "id": 27, "nombre": "A.B.A", "tipo": "Unique", "rival": "General", "victorias": 38, "derrotas": 27 },
+    { "id": 28, "nombre": "Slayer", "tipo": "Power", "rival": "General", "victorias": 7, "derrotas": 12 },
+    { "id": 29, "nombre": "Queen Dizzy", "tipo": "Unique", "rival": "General", "victorias": 5, "derrotas": 34 },
+    { "id": 30, "nombre": "Venom", "tipo": "Zoning", "rival": "General", "victorias": 39, "derrotas": 22 },
+    { "id": 31, "nombre": "Unika", "tipo": "Balance", "rival": "General", "victorias": 19, "derrotas": 5 },
+    { "id": 32, "nombre": "Lucy", "tipo": "Balance", "rival": "General", "victorias": 39, "derrotas": 36 },
+    { "id": 33, "nombre": "Jam Kuradoberi", "tipo": "Rushdown", "rival": "General", "victorias": 25, "derrotas": 27 },
+    { "id": 34, "nombre": "Robo-Ky", "tipo": "Unique", "rival": "General", "victorias": 8, "derrotas": 18 }
+  ],
+  "consejos": {
+    "Balance": {
+      "Zoning": "Avanza con cuidado y busca cerrar la distancia antes de que el rival controle el espacio.",
+      "Balance": "No te confíes. Juega sólido, no cometas errores tontos y busca situaciones donde puedas aprovechar su falta de especialización.",
+      "Rushdown": "Mantén la calma, usa anti-airs y pokes para detener su avance. No dejes que te arrinconen.",
+      "Shooting": "Evade los proyectiles y busca aberturas para entrar. No te quedes quieto recibiendo presión a distancia.",
+      "One Shot": "Sé paciente y no le des huecos grandes. Castiga sus intentos de golpe decisivo y no te dejes atrapar en un solo error.",
+      "Power": "No pelees de frente. Usa movilidad, escapes y golpes rápidos para desgastarlo antes de que te aplaste.",
+      "Unique": "Estudia su mecánica especial. Una vez que entiendas su truco principal, se vuelve mucho más fácil de contrarrestar."
+    },
+    "Zoning": {
+      "Balance": "Te cuesta controlar el espacio frente a su buen equilibrio. Busca anti-airs seguros y no te quedes lejos esperando.",
+      "Zoning": "Espejo de control de distancia. Gana quien tenga más paciencia y lea mejor los proyectiles.",
+      "Rushdown": "Es tu peor matchup. Separa con proyectiles, pero no te quedes quieto. Usa dash para cruzar y busca castigos.",
+      "Shooting": "Tienes control de la distancia. Mantén los proyectiles y evita que se acerque sin recibir daño.",
+      "One Shot": "Mantén la distancia y no le permitas acercarse. Usa proyectiles para bloquear su camino al golpe decisivo.",
+      "Power": "Estás en desventaja clara. Aléjate con movilidad y castiga sus avances lentos con proyectiles.",
+      "Unique": "Depende de su mecánica. Estudia cómo la usa y adapta tu control de espacio."
+    },
+    "Rushdown": {
+      "Balance": "Presiona sin pausa para no darle tiempo a ajustarse. Cuidado con sus anti-airs y contras.",
+      "Zoning": "Te cuesta cruzar sus proyectiles. Usa dash, cancels y momentos de bloqueo para acercarte sin quedarte en el aire.",
+      "Rushdown": "Espejo de presión. Gana quien tenga mejor lectura de los anti-airs y de las opciones de ataque.",
+      "Shooting": "Entra con presión constante. Sus proyectiles no te alcanzan si te acercas con dash.",
+      "One Shot": "Presiona rápido antes de que cargue su golpe. No le des tiempo de preparar el golpe decisivo.",
+      "Power": "Busca presión corta y rápida. Evita sus golpes de gran alcance y castiga cada recuperación.",
+      "Unique": "Desconfía de su mecánica. Entra solo cuando estés seguro y no le des la iniciativa."
+    },
+    "Shooting": {
+      "Balance": "Mantén los proyectiles y no te expongas a su cierre. Espera a que se equivoque para castigar.",
+      "Zoning": "Ceder el control de distancia lo complica. Busca entrar con dash o salto y no te quedes lejos.",
+      "Rushdown": "Te presiona de cerca. Usa proyectiles a distancia y anti-airs para detener su avance.",
+      "Shooting": "Espejo de disparos. Gana quien evite mejor los proyectiles y espere la apertura.",
+      "One Shot": "Su golpe decisivo tiene pocas defensas. Mantén los proyectiles y presiona cuando se acerque.",
+      "Power": "Sus golpes potentes te alcanzan si te acercas. Mantén distancia, usa movilidad y evita quedarte en el suelo.",
+      "Unique": "No conoces bien su mecánica. Avanza con cuidado y no te quedes disparando sin pensar."
+    },
+    "One Shot": {
+      "Balance": "Tu golpe decisivo es difícil de acertar. Sé paciente y busca el momento exacto para castigar.",
+      "Zoning": "Te cuesta acercarte a sus proyectiles. Avanza con cuidado y prepara bien tu golpe decisivo.",
+      "Rushdown": "Te presiona demasiado rápido. Busca anti-airs y defensa para ganar tiempo hasta tu oportunidad.",
+      "Shooting": "Sus disparos te obligan a esperar. Carga tu golpe con calma y evita quedarte a mitad de camino.",
+      "One Shot": "Espejo de golpes decisivos. Gana quien acierte primero la oportunidad. No te arriesgues sin lectura.",
+      "Power": "Tienes ventaja: su golpe no es tan fuerte. Busca el momento para tu golpe decisivo.",
+      "Unique": "Estudia su mecánica. Carga tu golpe decisivo con paciencia y evita sus trucos."
+    },
+    "Power": {
+      "Balance": "Tu fuerza tiene poca ventaja frente a su buen equilibrio. Busca castigar sus errores con golpes pesados.",
+      "Zoning": "Acércate sin miedo a sus proyectiles. Usa tus golpes fuertes y castiga cada recuperación.",
+      "Rushdown": "Te presiona demasiado. Busca anti-airs y golpes de gran alcance para alejarlo.",
+      "Shooting": "Tus golpes potentes superan sus disparos. Avanza cuando tengas espacio y castiga sus errores.",
+      "One Shot": "Su golpe decisivo es peligroso. No le des oportunidades y mantén presión constante.",
+      "Power": "Espejo de fuerza. Gana quien controle mejor el espacio y no caiga en castigos grandes.",
+      "Unique": "Tu fuerza tiene ventaja. Estudia su mecánica y usa golpes pesados cuando sea seguro."
+    },
+    "Unique": {
+      "Balance": "Su equilibrio es difícil de superar. Estudia sus movimientos y busca el momento para tu mecánica especial.",
+      "Zoning": "Ambos controlan el espacio. Usa tu mecánica especial cuando el rival se confíe.",
+      "Rushdown": "Tu mecánica especial le puede ganar. Úsala para frenar su presión y castigar sus errores.",
+      "Shooting": "Tienes ventaja. Usa tu mecánica para entrar cuando sus disparos se detengan.",
+      "One Shot": "Mantén el control con tu mecánica especial y no le des la oportunidad de cargar su golpe.",
+      "Power": "Sus golpes fuertes son peligrosos. Usa tu mecánica para evitarlos y castigar.",
+      "Unique": "Espejo de mecánicas. Gana quien conozca mejor su truco y lo use en el momento justo."
+    }
+  },
+  "ventajas": {
+    "Balance": { "Balance": 0, "Zoning": 2, "Rushdown": 1, "Shooting": 1, "One Shot": 2, "Power": 1, "Unique": 1 },
+    "Zoning": { "Balance": -2, "Zoning": 0, "Rushdown": 4, "Shooting": 1, "One Shot": 3, "Power": -3, "Unique": 0 },
+    "Rushdown": { "Balance": -1, "Zoning": -4, "Rushdown": 0, "Shooting": 2, "One Shot": 3, "Power": 2, "Unique": -1 },
+    "Shooting": { "Balance": -1, "Zoning": -1, "Rushdown": -2, "Shooting": 0, "One Shot": 2, "Power": -2, "Unique": -2 },
+    "One Shot": { "Balance": -2, "Zoning": -3, "Rushdown": -3, "Shooting": -2, "One Shot": 0, "Power": 1, "Unique": 0 },
+    "Power": { "Balance": -1, "Zoning": 3, "Rushdown": -2, "Shooting": 2, "One Shot": -1, "Power": 0, "Unique": 1 },
+    "Unique": { "Balance": -1, "Zoning": 0, "Rushdown": 1, "Shooting": 2, "One Shot": 0, "Power": -1, "Unique": 0 }
+  }
+}

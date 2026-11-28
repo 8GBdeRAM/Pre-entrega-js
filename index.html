@@ -1,37 +1,56 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Winrates de Guilty Gear</title>
-    <link rel="stylesheet" href="./css/style.css">
+    <link rel="stylesheet" href="./css/style.css" />
     <script defer src="./js/main.js"></script>
-</head>
-<body>
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/sweetalert2@11.26.26/dist/sweetalert2.min.css"
+    />
+  </head>
+  <body>
     <h1>Winrates de Guilty Gear</h1>
 
     <section id="seccion-personajes">
-        <h2>Personajes</h2>
-        <form id="formulario-personaje">
-            <input type="text" id="nombre-personaje" placeholder="Nombre">
-            <input type="number" id="victorias" placeholder="Victorias" min="0">
-            <input type="number" id="derrotas" placeholder="Derrotas" min="0">
-            <button type="button" id="boton-agregar">Agregar</button>
-        </form>
-        <input type="text" id="buscador-personaje" placeholder="Buscar">
-        <p id="mensaje"></p>
-        <div id="contenedor-items"></div>
+      <h2>Personajes</h2>
+      <input type="text" id="buscador-personaje" placeholder="Buscar" />
+      <p id="mensaje-carga"></p>
+      <h3>Lista de personajes</h3>
+      <div id="contenedor-items"></div>
     </section>
 
     <section id="seccion-matchups">
-        <h2>Matchups</h2>
-        <select id="select-personaje"></select>
-        <select id="select-rival"></select>
-        <input type="checkbox" id="todos-matchups">
-        <label for="todos-matchups">Todos los Matchups</label>
-        <button type="button" id="boton-crear-matchup">crear Matchup</button>
-        <p id="mensaje-matchup"></p>
-        <div id="contenedor-matchups"></div>
+      <h2>Matchups</h2>
+      <select id="select-personaje"></select>
+      <input type="checkbox" id="todos-matchups" />
+      <label for="todos-matchups">Todos los Matchups</label>
+      <div id="filtros-tipos"></div>
+      <p id="mensaje-matchup"></p>
+      <div id="contenedor-matchups"></div>
     </section>
-</body>
+
+    <section id="seccion-consejos">
+      <h2>Consejos</h2>
+      <select id="select-consejo-personaje"></select>
+      <select id="select-consejo-rival"></select>
+      <button type="button" id="boton-consejo">Escribir consejo</button>
+      <input type="search" id="buscar-consejo" placeholder="Buscar consejo...">
+      <div id="contenedor-consejos"></div>
+    </section>
+
+    <!-- Las librerias de JavaScript -->
+    <script
+      type="text/javascript"
+      src="https://cdn.jsdelivr.net/npm/toastify-js"
+    ></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.26.26/dist/sweetalert2.all.min.js"></script>
+  </body>
 </html>
